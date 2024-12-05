@@ -1,0 +1,436 @@
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio SIG - Técnico en Sistemas de Información Geográfica</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        :root {
+            --bg-dark: #0C0C1E;
+            --star-color: rgba(255,255,255,0.8);
+            --text-primary: #FFFFFF;
+            --text-secondary: #E0E0FF;
+            --accent-purple: #6A5ACD;
+            --section-bg-gradient: linear-gradient(145deg, rgba(12,12,30,1) 0%, rgba(30,30,60,1) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .cosmic-background {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            overflow: hidden;
+            background: var(--bg-dark);
+        }
+
+        .star {
+            position: absolute;
+            background-color: var(--star-color);
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--section-bg-gradient);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        .section h2 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--accent-purple);
+        }
+
+        .section p {
+            max-width: 800px;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(12,12,30,0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            text-shadow: 0 0 5px rgba(106,90,205,0.5);
+        }
+
+        .nav a:hover {
+            color: var(--accent-purple);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 900px;
+        }
+
+        .content-card {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: scale(1.03);
+        }
+
+        #map, #mapa-cetmar {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-background" id="cosmicBackground"></div>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#about-me">Acerca de mí</a>
+            <a href="#about-ensenada">Ensenada, B.C.</a>
+            <a href="#about-school">Mi Escuela</a>
+            <a href="#about-career">Mi Carrera</a>
+            <a href="#sig-works">Trabajos SIG</a>
+        </div>
+    </nav>
+
+    <section id="about-me" class="section">
+        <h2>🧑 Acerca de mí</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <p>Soy un estudiante apasionado de CETMAR 11, dedicado a los Sistemas de Información Geográfica (SIG). Mi objetivo es combinar tecnología, análisis de datos y conocimiento geoespacial para crear soluciones innovadoras que tengan un impacto significativo en nuestra comprensión del mundo.</p>
+                <p>Puedes conocer más de mi experiencia profesional en <a href="https://www.linkedin.com/in/saul-alexander-savin-payan-044207340">mi perfil de LinkedIn</a>.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="about-ensenada" class="section">
+        <h2>🏙️ Acerca de Ensenada, B.C.</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <p>Ensenada, conocida como "La Cenicienta del Pacífico", es una ciudad costera rica en historia y diversidad geográfica. Ubicada en Baja California, ofrece un paisaje único que va desde sus famosos viñedos hasta sus extensas costas, pasando por montañas y valles. Su geografía diversa la convierte en un laboratorio natural perfecto para estudios geoespaciales.</p>
+                <section id="ensenada">
+                    <h2>Acerca de Ensenada</h2>
+                    <video controls width="100%" height="auto">
+                        <source src="ENSENADA.mp4" type="video/mp4">
+                        Tu navegador no soporta la reproducción de video.
+                    </video>
+                </section>
+            </script>
+            </div>
+        </div>
+    </section>
+
+    <section id="about-school" class="section">
+        <h2>🏫 Acerca de mi Escuela</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <p>El CETMAR 11 es una institución educativa líder en formación técnica marina y geoespacial. Ubicado estratégicamente en Ensenada, B.C., ofrece programas de vanguardia que preparan a los estudiantes para desafíos tecnológicos en campos como los Sistemas de Información Geográfica.</p>
+                
+                <!-- Imagen del CETMAR 11 -->
+                <h3>Vista del CETMAR 11</h3>
+                <div class="image-container">
+                    <img src="CETMAR11.jpg" alt="Foto del CETMAR 11">
+                </div>
+                
+                <!-- Mapa interactivo del CETMAR 11 -->
+                <div id="mapa-cetmar"></div>
+                <script>
+                    var map2 = L.map('mapa-cetmar').setView([31.8303, -116.6022], 14); // Coordenadas del CETMAR 11
+    
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    }).addTo(map2);
+    
+                    var marker2 = L.marker([31.8303, -116.6022]).addTo(map2);
+                    marker2.bindPopup("<b>CETMAR 11</b><br>Centro de Estudios Tecnológicos del Mar 11").openPopup();
+                </script>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+        /* Ajustar la imagen para que ocupe el tamaño completo del cuadro */
+        .image-container {
+            width: 100%; /* Ocupar todo el ancho del contenedor */
+            height: 300px; /* Ajustar la altura deseada */
+            overflow: hidden; /* Evitar desbordes */
+        }
+    
+        .image-container img {
+            width: 100%; /* Hacer que la imagen se ajuste al ancho */
+            height: 100%; /* Hacer que la imagen se ajuste al alto */
+            object-fit: cover; /* Ajustar sin deformar la imagen */
+        }
+    
+        /* Estilizar el mapa para que sea proporcional */
+        #mapa-cetmar {
+            width: 100%;
+            height: 300px;
+            margin-top: 20px;
+        }
+    </style>
+    
+
+    <section id="about-career" class="section">
+        <h2>🌐 Acerca de mi Carrera</h2>
+        <div class="content-grid">
+            <div class="content-card">
+                <p>Mi visión es que la carrera de Técnico en SIG me impulse a más oportunidades dentro de las áreas de cómputo que existen, permitiéndome crecer profesionalmente en sectores que requieren habilidades geoespaciales y tecnológicas.</p>
+                
+                <!-- Imagen GIS -->
+                <div class="image-container">
+                    <img src="GIS.jpg" alt="Imagen de GIS" class="gis-image">
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+        /* Estilos para la imagen de GIS */
+        .image-container {
+            text-align: center; /* Centra la imagen */
+            margin-top: 20px;
+        }
+    
+        .gis-image {
+            width: 100%; /* Ocupar el ancho del contenedor */
+            max-width: 400px; /* Limitar el tamaño máximo */
+            height: auto; /* Mantener la proporción */
+            border-radius: 10px; /* Bordes redondeados opcionales */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra opcional */
+        }
+    </style>
+    
+    <section id="sig-works" class="section">
+        <h2>🔧 Trabajos SIG</h2>
+        <div class="content-grid">
+            <!-- Proyecto 1 -->
+            <div class="content-card">
+                <img src="PROYECTO1.png" alt="Proyecto Pucamon" class="card-image">
+                <h3>Proyecto Pucamon</h3>
+            </div>
+            <!-- Proyecto 2 -->
+            <div class="content-card">
+                <img src="PROYECTO2.png" alt="Piedra, Papel o Tijeras" class="card-image">
+                <h3>Piedra, Papel o Tijeras</h3>
+            </div>
+            <!-- Proyecto 3 -->
+            <div class="content-card">
+                <img src="PROYECTO3.png" alt="Tabla de Multiplicar" class="card-image">
+                <h3>Tabla de Multiplicar</h3>
+            </div>
+            <!-- Proyecto 4 -->
+            <div class="content-card">
+                <img src="PROYECTO4.png" alt="Gráfica de Correlación" class="card-image">
+                <h3>Gráfica de Correlación</h3>
+            </div>
+            <!-- Proyecto 5 -->
+            <div class="content-card">
+                <img src="PROYECTO5.png" alt="Piedra, Papel o Tijeras V.2" class="card-image">
+                <h3>Piedra, Papel o Tijeras V.2</h3>
+            </div>
+            <!-- Proyecto 6 -->
+            <div class="content-card">
+                <img src="PROYECTO6.png" alt="Par o Impar" class="card-image">
+                <h3>Par o Impar</h3>
+            </div>
+            <!-- Proyecto 7 -->
+            <div class="content-card">
+                <img src="PROYECTO7.png" alt="Colorear Pixeles" class="card-image">
+                <h3>Colorear Pixeles</h3>
+            </div>
+            <!-- Proyecto 8 -->
+            <div class="content-card">
+                <img src="PROYECTO8.png" alt="Correlación de Datos Sintéticos" class="card-image">
+                <h3>Proyecto Prompio</h3>
+            </div>
+            <!-- Proyecto 9 -->
+            <div class="content-card">
+                <img src="PROYECTO9.png" alt="Tabla de Pixeles" class="card-image">
+                <h3>Tabla de Pixeles</h3>
+            </div>
+            <!-- Proyecto 10 -->
+            <div class="content-card">
+                <img src="PROYECTO10.png" alt="Probamos Google Earth Engine" class="card-image">
+                <h3>Probamos Google Earth Engine</h3>
+            </div>
+            <!-- Proyecto 11 -->
+            <div class="content-card">
+                <img src="PROYECTO11.png" alt="Playground" class="card-image">
+                <h3>Playground</h3>
+            </div>
+            <!-- Proyecto 12 -->
+            <div class="content-card">
+                <img src="PROYECTO12.png" alt="WIM 5. Technical Report" class="card-image">
+                <h3>WIM 5. Technical Report</h3>
+            </div>
+            <!-- Proyecto 13 -->
+            <div class="content-card">
+                <img src="PROYECTO13.png" alt="GEE Proyecto 1" class="card-image">
+                <h3>GEE Proyecto 1</h3>
+            </div>
+            <!-- Proyecto 14 -->
+            <div class="content-card">
+                <img src="PROYECTO14.png" alt="GEE Proyecto 2" class="card-image">
+                <h3>GEE Proyecto 2</h3>
+            </div>
+            <!-- Proyecto 15 -->
+            <div class="content-card">
+                <img src="PROYECTO15.png" alt="GEE Proyecto 3" class="card-image">
+                <h3>GEE Proyecto 3</h3>
+            </div>
+            <!-- Proyecto 16 -->
+            <div class="content-card">
+                <img src="PROYECTO16.png" alt="Poster de un Reporte" class="card-image">
+                <h3>Poster propio</h3>
+            </div>
+            <!-- Proyecto 17 -->
+            <div class="content-card">
+                <img src="PROYECTO17.png" alt="Trabajo 17" class="card-image">
+                <h3>Presetacion propia</h3>
+            </div>
+            <!-- Proyecto 18 -->
+            <div class="content-card">
+                <img src="PROYECTO18.png" alt="Trabajo 18" class="card-image">
+                <h3>Rosa de los vientos</h3>
+            </div>
+            <!-- Proyecto 19 -->
+            <div class="content-card">
+                <img src="PROYECTO19.png" alt="Trabajo 19" class="card-image">
+                <h3>Exposición 1</h3>
+            </div>
+            <!-- Proyecto 20 -->
+            <div class="content-card">
+                <img src="PROYECTO20.png" alt="Trabajo 20" class="card-image">
+                <h3>Datos de Precipitación LandSat con GGE</h3>
+            </div>
+        </div>
+    </section>
+    
+                </div>
+            </div>
+        </section>
+        
+    </section>
+    
+    <style>
+        /* Diseño de la cuadrícula */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+    
+        /* Estilo de las tarjetas */
+        .content-card {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            background-color: #007bff; /* Fondo azul */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        /* Estilo de la imagen */
+        .card-image {
+            width: 100%;
+            max-width: 200px; /* Tamaño máximo de la imagen */
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+    
+        /* Estilo para los títulos de las tarjetas */
+        .content-card h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #ffffff; /* Letras blancas */
+        }
+    
+        /* Título principal */
+        .section h2 {
+            text-align: center;
+            font-size: 1.8em;
+            color: #333; /* Color oscuro para el título principal */
+            margin-bottom: 20px;
+        }
+    </style>
+    
+
+
+
+
+
+
+</body>
+</html>
